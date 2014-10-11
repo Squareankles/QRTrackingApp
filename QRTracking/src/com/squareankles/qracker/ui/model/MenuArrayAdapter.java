@@ -18,10 +18,10 @@ public class MenuArrayAdapter
   private Context mContext;
   List<DrawerItem> mMenuItems;
   
-  public MenuArrayAdapter(List<DrawerItem> paramList, Context paramContext)
+  public MenuArrayAdapter(List<DrawerItem> menuItems, Context context)
   {
-    this.mMenuItems = paramList;
-    this.mContext = paramContext;
+    this.mMenuItems = menuItems;
+    this.mContext = context;
   }
   
   public int getCount()
@@ -32,28 +32,21 @@ public class MenuArrayAdapter
     return 0;
   }
   
-  public Object getItem(int paramInt)
+  public Object getItem(int position)
   {
-    return this.mMenuItems.get(paramInt);
+    return mMenuItems.get(position);
   }
   
-  public long getItemId(int paramInt)
+  public long getItemId(int position)
   {
-    return paramInt;
+    return position;
   }
   
-  public View getView(int paramInt, View paramView, ViewGroup paramViewGroup)
+  public View getView(int position, View view, ViewGroup viewGroup)
   {
-    View localView = ((LayoutInflater)this.mContext.getSystemService("layout_inflater")).inflate(R.layout.menu_list_item, paramViewGroup, false);
-    TextView localTextView = (TextView)localView.findViewById(2131034178);
-    ((ImageView)localView.findViewById(R.id.menu_list_image)).setImageResource(((DrawerItem)this.mMenuItems.get(paramInt)).getImageResource());
-    localTextView.setText(((DrawerItem)this.mMenuItems.get(paramInt)).getItemName());
-    localView.setTag(this.mMenuItems.get(paramInt));
-    return localView;
+	DrawerItem mItem= (DrawerItem)mMenuItems.get(position);
+    return  mItem.CreateView(mContext);
   }
   
-  public void notifyDataSetChanged()
-  {
-    super.notifyDataSetChanged();
-  }
+  
 }

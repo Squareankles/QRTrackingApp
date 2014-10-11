@@ -19,6 +19,8 @@ import com.example.qrtracking.R;
 import com.squareankles.qracker.fragments.MembershipFragment;
 import com.squareankles.qracker.fragments.OpeningFragment;
 import com.squareankles.qracker.ui.model.DrawerItem;
+import com.squareankles.qracker.ui.model.DrawerItem.IMenuItem;
+import com.squareankles.qracker.ui.model.DrawerItem.MenuView;
 import com.squareankles.qracker.ui.model.MenuArrayAdapter;
 
 import java.util.ArrayList;
@@ -74,14 +76,15 @@ public class LaunchActivity extends ActionBarActivity {
 
 	@SuppressWarnings("unchecked")
 	private void setUpNavDrawerItems() {
-		this.mDrawerLayout = ((DrawerLayout) findViewById(R.id.drawer_layout));
-		this.mDrawerList = ((ListView) findViewById(R.id.left_drawer));
+		mDrawerLayout = ((DrawerLayout) findViewById(R.id.drawer_layout));
+		mDrawerList = ((ListView) findViewById(R.id.left_drawer));
 		@SuppressWarnings("rawtypes")
-		ArrayList localArrayList = new ArrayList();
-		localArrayList.add(new DrawerItem("Memberships", 1,
-				MembershipFragment.class, R.drawable.member_icon));
+		ArrayList drawerItems = new ArrayList();
+		drawerItems.add(new DrawerItem("Opening Fragment", 0,OpeningFragment.class, R.drawable.white_launcher));
+		drawerItems.add(new DrawerItem("Memberships", 1, MembershipFragment.class, R.drawable.member_icon));
+		
 		MenuArrayAdapter localMenuArrayAdapter = new MenuArrayAdapter(
-				localArrayList, this);
+				drawerItems, this);
 		this.mDrawerList.setAdapter(localMenuArrayAdapter);
 		this.mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
@@ -117,12 +120,12 @@ public class LaunchActivity extends ActionBarActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 
-			DrawerItem localDrawerItem = (DrawerItem) view.getTag();
-			LaunchActivity.this.mCurrentFragment = localDrawerItem
-					.getFragment();
+			IMenuItem drawerItemMV = (IMenuItem) view;
+			
+			LaunchActivity.this.mCurrentFragment = drawerItemMV.getItemFragment();
+			drawerItemMV.setItemSelected();
 			LaunchActivity.this.getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, mCurrentFragment).commit();
-			LaunchActivity.this.mDrawerList.setItemChecked(position, true);
 			LaunchActivity.this.mDrawerLayout
 					.closeDrawer(LaunchActivity.this.mDrawerList);
 		}
